@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskFlow — Task Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-icon">⚡</span>
+        <span class="brand-name">TaskFlow</span>
+      </div>
+      <button class="dark-toggle" id="darkToggle" title="Toggle Dark Mode">
+        <span class="toggle-icon" id="toggleIcon">🌙</span>
+        <span class="toggle-label" id="toggleLabel">Dark Mode</span>
+      </button>
+    </div>
+  </header>
+  <!-- Main -->
+  <main class="main">
+
+    <!-- Stats Row -->
+    <section class="stats-row">
+      <div class="stat-card">
+        <div class="stat-value" id="totalTasks">0</div>
+        <div class="stat-label">Total Tasks</div>
+      </div>
+      <div class="stat-card on-time">
+        <div class="stat-value" id="onTimeTasks">0</div>
+        <div class="stat-label">On Time ✅</div>
+      </div>
+      <div class="stat-card late">
+        <div class="stat-value" id="lateTasks">0</div>
+        <div class="stat-label">Late ❌</div>
+      </div>
+      <div class="stat-card accuracy-card">
+        <div class="stat-value" id="accuracyValue">0%</div>
+        <div class="stat-label">Accuracy</div>
+      </div>
+    </section>
+
+    <!-- Progress Bar -->
+    <section class="progress-section">
+      <div class="progress-header">
+        <span class="progress-title">On-Time Accuracy</span>
+        <span class="progress-pct" id="progressPct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </section>
+
+    <!-- Add / Edit Task Form -->
+    <section class="form-section">
+      <h2 class="form-title" id="formTitle">Add New Task</h2>
+      <form class="task-form" id="taskForm" novalidate>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="taskName">Task Name</label>
+            <input type="text" id="taskName" placeholder="e.g. Submit report" autocomplete="off" />
+            <span class="error-msg" id="nameError"></span>
+          </div>
+          <div class="form-group">
+            <label for="deadlineTime">Deadline</label>
+            <input type="datetime-local" id="deadlineTime" />
+            <span class="error-msg" id="deadlineError"></span>
+          </div>
+          <div class="form-group">
+            <label for="completionTime">Completion Time</label>
+            <input type="datetime-local" id="completionTime" />
+            <span class="error-msg" id="completionError"></span>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="submitBtn">
+            <span>Add Task</span>
+          </button>
+          <button type="button" class="btn btn-ghost" id="cancelBtn" style="display:none;">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Tasks Table -->
+    <section class="table-section">
+      <div class="table-header">
+        <h2 class="table-title">All Tasks</h2>
+        <button class="btn btn-danger-outline" id="clearAllBtn">Clear All</button>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="task-table" id="taskTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Task Name</th>
+              <th>Deadline</th>
+              <th>Completion Time</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="taskTableBody">
+            <!-- Tasks rendered here -->
+          </tbody>
+        </table>
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon">📋</div>
+          <p>No tasks yet. Add your first task above!</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-icon">🗑️</div>
+      <h3 class="modal-title">Delete Task?</h3>
+      <p class="modal-desc">This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="cancelDelete">Cancel</button>
+        <button class="btn btn-danger" id="confirmDelete">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
