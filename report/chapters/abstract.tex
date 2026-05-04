@@ -1,0 +1,17 @@
+\newpage
+\begin{center}
+    \vspace*{0.05cm}
+    \Large
+    \textbf{Abstract}\\
+    \vspace{0.5cm}
+\end{center}
+
+\begin{justify}
+The AI-Based Task Estimation System Using Full Stack Development and Rule-Based Artificial Intelligence is a web-based mini project designed to improve personal task planning by comparing estimated task duration with actual completion time. Time estimation is a common challenge for students, professionals, and teams because users often assume that a task will require less time than it actually takes. Such inaccurate planning can lead to missed deadlines, poor productivity, stress, and ineffective scheduling. The proposed system addresses this problem by allowing a user to enter a task name, expected time, and actual time, after which the system automatically analyses the difference and classifies the estimation pattern.
+
+The project follows a full-stack architecture consisting of an HTML, CSS, and JavaScript frontend, a Node.js and Express.js backend, and a MySQL database. The backend exposes REST APIs for task submission, user registration, login, task retrieval, dashboard data, and suggested time calculation. The database stores user details, task records, and task analysis results in separate relational tables. This separation supports structured storage, retrieval, and future extension of the project.
+
+The artificial intelligence component is implemented using rule-based logic. If the actual time is greater than the expected time, the system marks the task as underestimation. If the actual time is less than the expected time, it marks the task as overestimation. If both values are equal, it marks the task as accurate. The system also calculates an accuracy percentage and stores the analysis result. Although this approach is simpler than machine learning, it is transparent, easy to explain, and suitable for a college mini project where the objective is to demonstrate practical decision logic using real user input.
+
+The system helps users understand their estimation habits over time. By reviewing previous tasks and their analysis, users can improve future planning and make more realistic time commitments. The project also includes scope for future improvement, such as adding secure authentication, machine learning-based prediction, reminders, graphical dashboards, and mobile application support. Overall, the system demonstrates how full-stack development and basic AI rules can be combined to solve a practical productivity problem.
+\end{justify}

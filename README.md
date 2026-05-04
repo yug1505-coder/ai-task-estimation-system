@@ -1,70 +1,89 @@
 # AI-Based Task Estimation System
 
-## About the Project
-This is a mini project made to help users improve their time estimation while doing tasks.  
-Many times we think a task will take less time, but in reality it takes more. This system helps to understand that gap.
+This project helps users improve time estimation by comparing planned hours with actual hours and turning the result into practical planning feedback.
 
-The project compares the estimated time and the actual time taken to complete a task and then gives simple suggestions.
+## Features
 
----
+- User registration and login with JWT authentication
+- Add completed tasks with estimated time, actual time, and optional due date
+- Capture prediction parameters: category, complexity, priority, experience, task type, requirement clarity, tool familiarity, focus, interruptions, energy, team size, dependencies, risk, and review effort
+- Accuracy score capped between 0% and 100%
+- 10% tolerance band for realistic "Accurate" classification
+- Dashboard metrics for total tasks, average accuracy, average error, and planning bias
+- Chart-based breakdown of accurate, overestimated, and underestimated tasks
+- Search and filter task history
+- Smart suggestions based on similar previous tasks
+- Weighted time prediction using task name similarity plus matching task context
+- Prediction adjustment considers unclear requirements, unfamiliar tools, dependencies, risk, review effort, team size, and task type
+- Light and dark mode
 
-## Why This Project?
-People often fail to manage their time properly because of wrong estimation.  
-This leads to missed deadlines and stress.  
-So, this system is created to solve this problem in a simple way.
+## Estimation Logic
 
----
+The backend calculates accuracy using actual time as the reference:
 
-## How the System Works
-- User adds a task  
-- Enters estimated time  
-- After completing the task, enters actual time  
-- System compares both times  
-- Based on comparison, it shows whether the user underestimated or overestimated  
+```text
+percentage error = |actual time - estimated time| / actual time * 100
+accuracy = 100 - percentage error
+```
 
----
+Accuracy is clamped between 0 and 100. A task is treated as accurate when the error is within 10%.
 
 ## Technologies Used
 
-Frontend:
-- HTML  
-- CSS  
-- JavaScript  
+- Frontend: HTML, CSS, JavaScript, Chart.js
+- Backend: Node.js, Express.js
+- Database: MongoDB with Mongoose
+- Authentication: bcrypt and JSON Web Tokens
 
-Backend:
-- Node.js  
-- Express.js  
+## Start Project
 
-Database:
-- MySQL  
+Start MongoDB locally first, then run:
 
-AI:
-- Rule-based logic (simple conditions are used for suggestions)
+```powershell
+cd C:\Users\Asus\ai-task-estimation-system\backend
+npm.cmd install
+npm.cmd start
+```
 
----
+Then open:
 
-## Main Features
-- Add new tasks  
-- Track estimated vs actual time  
-- Simple analysis of performance  
-- Helps in improving future planning  
+```text
+http://localhost:3000
+```
 
----
+You can also run the frontend separately during development:
 
-## Benefits
-- Better time management  
-- Helps in planning tasks properly  
-- Reduces mistakes in estimation  
-- Improves productivity  
+```powershell
+npm run frontend:dev
+```
 
----
+## Environment
 
-## Future Improvements
-- Can add machine learning for better predictions  
-- Can create a mobile app  
-- Can add notifications and reminders  
+Create or update `backend/.env`:
 
----
+```text
+PORT=3000
+MONGODB_URI=mongodb://127.0.0.1:27017/task_estimation_system
+JWT_SECRET=replace_with_a_secure_secret
+```
 
-## Note
-This project is developed as a college mini project for learning purposes.
+## Deploy
+
+Deploy this repository as one Node web service.
+
+Use these commands on the hosting platform:
+
+```text
+Build command: npm install
+Start command: npm start
+```
+
+Set these environment variables:
+
+```text
+MONGODB_URI=mongodb+srv://...
+JWT_SECRET=your_long_random_secret
+NODE_ENV=production
+```
+
+The backend serves the frontend from `/frontend`, so the deployed app uses one public URL for both the UI and API.

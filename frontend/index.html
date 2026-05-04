@@ -1,29 +1,380 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-theme="light">
 <head>
-    <title>Task Estimation</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Task Estimation System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
+  <header class="app-header">
+    <div class="header-inner">
+      <a class="brand" href="#" aria-label="AI Task Estimation System">
+        <span class="brand-mark">AI</span>
+        <span>
+          <span class="brand-name">Task Estimator</span>
+          <span class="brand-subtitle">Accuracy analytics</span>
+        </span>
+      </a>
+      <div class="header-actions">
+        <button class="btn btn-secondary" id="logoutBtn" style="display:none;">Logout</button>
+        <button class="theme-toggle" id="darkToggle" type="button" aria-label="Toggle theme">
+          <span id="toggleIcon">Moon</span>
+          <span id="toggleLabel">Dark</span>
+        </button>
+      </div>
+    </div>
+  </header>
 
-<div class="container">
-    <h2>AI Task Estimation System</h2>
+  <main class="auth-layout" id="authSection">
+    <section class="auth-panel">
+      <p class="eyebrow">Planning intelligence</p>
+      <h1 id="authTitle">Login to System</h1>
+      <p class="auth-copy">Compare estimated and actual time, learn your planning bias, and improve the next estimate.</p>
 
-    <form id="taskForm">
-        <input type="text" id="task_name" placeholder="Task Name" required>
+      <form class="task-form" id="authForm" novalidate>
+        <div class="form-group" id="nameGroup" style="display:none;">
+          <label for="authName">Name</label>
+          <input type="text" id="authName" placeholder="Your name" autocomplete="name" />
+        </div>
+        <div class="form-group">
+          <label for="authEmail">Email</label>
+          <input type="email" id="authEmail" placeholder="email@example.com" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label for="authPassword">Password</label>
+          <input type="password" id="authPassword" placeholder="Minimum 6 characters" autocomplete="current-password" />
+        </div>
+        <div class="error-msg" id="authError" role="alert"></div>
+        <button type="submit" class="btn btn-primary btn-full">
+          <span id="authSubmitText">Login</span>
+        </button>
+        <button type="button" class="link-button" id="toggleAuthMode">Need an account? Register</button>
+      </form>
+    </section>
+  </main>
 
-        <input type="number" id="expected_time" placeholder="Expected Time (hours)" required>
+  <main class="app-shell" id="appSection" style="display:none;">
+    <section class="dashboard-hero">
+      <div>
+        <p class="eyebrow">Workspace</p>
+        <h1>Welcome, <span id="userNameDisplay">User</span></h1>
+        <p>Your estimates are scored with tolerance-based accuracy, time variance, and personal history.</p>
+      </div>
+      <div class="hero-score">
+        <span class="score-label">Average accuracy</span>
+        <strong id="heroAccuracy">0%</strong>
+      </div>
+    </section>
 
-        <input type="number" id="actual_time" placeholder="Actual Time (hours)" required>
+    <section class="stats-grid" aria-label="Task performance summary">
+      <article class="metric-card">
+        <span class="metric-label">Total tasks</span>
+        <strong id="totalTasks">0</strong>
+        <span class="metric-note">Completed analyses</span>
+      </article>
+      <article class="metric-card success">
+        <span class="metric-label">Accurate</span>
+        <strong id="accurateTasks">0</strong>
+        <span class="metric-note">Within 10% tolerance</span>
+      </article>
+      <article class="metric-card warning">
+        <span class="metric-label">Overestimated</span>
+        <strong id="overTasks">0</strong>
+        <span class="metric-note">Planned more time</span>
+      </article>
+      <article class="metric-card danger">
+        <span class="metric-label">Underestimated</span>
+        <strong id="underTasks">0</strong>
+        <span class="metric-note">Needed more time</span>
+      </article>
+      <article class="metric-card">
+        <span class="metric-label">Avg. error</span>
+        <strong id="avgError">0h</strong>
+        <span class="metric-note">Mean absolute gap</span>
+      </article>
+      <article class="metric-card">
+        <span class="metric-label">Planning bias</span>
+        <strong id="planningBias">Balanced</strong>
+        <span class="metric-note" id="planningBiasNote">No trend yet</span>
+      </article>
+    </section>
 
-        <button type="submit">Add Task</button>
-    </form>
+    <section class="analytics-grid">
+      <article class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>Estimation Quality</h2>
+            <p>Distribution of your task estimation outcomes.</p>
+          </div>
+          <span class="pill" id="avgAccuracy">0%</span>
+        </div>
+        <div class="progress-track" aria-hidden="true">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="chart-container">
+          <canvas id="estimationChart"></canvas>
+        </div>
+      </article>
 
-    <p id="responseMsg"></p>
-</div>
+      <article class="panel insights-panel">
+        <div class="panel-header">
+          <div>
+            <h2>Smart Insight</h2>
+            <p>Recommended adjustment for future estimates.</p>
+          </div>
+        </div>
+        <div class="insight-result" id="insightText">Add a few completed tasks to build a reliable pattern.</div>
+      </article>
+    </section>
 
-<script src="script.js"></script>
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h2>Add Task Analysis</h2>
+          <p>Use decimal hours, for example 1.5 for 1 hour 30 minutes.</p>
+        </div>
+      </div>
+      <form class="task-form" id="taskForm" novalidate>
+        <div class="form-grid">
+          <div class="form-group wide">
+            <label for="taskName">Task name</label>
+            <input type="text" id="taskName" placeholder="e.g. Prepare project presentation" autocomplete="off" />
+            <div class="helper-text" id="suggestedTimeBox"></div>
+            <span class="error-msg" id="nameError"></span>
+          </div>
+          <div class="form-group">
+            <label for="taskCategory">Category</label>
+            <select id="taskCategory">
+              <option>General</option>
+              <option>Coding</option>
+              <option>Documentation</option>
+              <option>Research</option>
+              <option>Design</option>
+              <option>Testing</option>
+              <option>Study</option>
+              <option>Meeting</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="complexity">Complexity</label>
+            <select id="complexity">
+              <option value="1">1 - Very easy</option>
+              <option value="2">2 - Easy</option>
+              <option value="3" selected>3 - Moderate</option>
+              <option value="4">4 - Hard</option>
+              <option value="5">5 - Very hard</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="priority">Priority</label>
+            <select id="priority">
+              <option>Low</option>
+              <option selected>Medium</option>
+              <option>High</option>
+              <option>Urgent</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="experienceLevel">Experience</label>
+            <select id="experienceLevel">
+              <option>Beginner</option>
+              <option selected>Intermediate</option>
+              <option>Advanced</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="taskType">Task type</label>
+            <select id="taskType">
+              <option selected>Feature</option>
+              <option>Bug fix</option>
+              <option>Refactor</option>
+              <option>Research spike</option>
+              <option>Review</option>
+              <option>Deployment</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="requirementClarity">Requirement clarity</label>
+            <select id="requirementClarity">
+              <option value="1">1 - Vague</option>
+              <option value="2">2 - Partial</option>
+              <option value="3" selected>3 - Clear enough</option>
+              <option value="4">4 - Clear</option>
+              <option value="5">5 - Very clear</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="toolFamiliarity">Tool familiarity</label>
+            <select id="toolFamiliarity">
+              <option value="1">1 - New tools</option>
+              <option value="2">2 - Limited</option>
+              <option value="3" selected>3 - Comfortable</option>
+              <option value="4">4 - Familiar</option>
+              <option value="5">5 - Expert</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="expectedTime">Estimated hours</label>
+            <input type="number" id="expectedTime" step="0.1" min="0" placeholder="2.5" />
+            <span class="error-msg" id="expectedError"></span>
+          </div>
+          <div class="form-group">
+            <label for="actualTime">Actual hours</label>
+            <input type="number" id="actualTime" step="0.1" min="0" placeholder="3.0" />
+            <span class="error-msg" id="actualError"></span>
+          </div>
+          <div class="form-group">
+            <label for="dueDate">Due date</label>
+            <input type="datetime-local" id="dueDate" />
+          </div>
+          <div class="form-group">
+            <label for="focusLevel">Focus level</label>
+            <select id="focusLevel">
+              <option value="1">1 - Very low</option>
+              <option value="2">2 - Low</option>
+              <option value="3" selected>3 - Normal</option>
+              <option value="4">4 - High</option>
+              <option value="5">5 - Deep focus</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="interruptionLevel">Interruptions</label>
+            <select id="interruptionLevel">
+              <option value="1">1 - None</option>
+              <option value="2" selected>2 - Light</option>
+              <option value="3">3 - Moderate</option>
+              <option value="4">4 - Frequent</option>
+              <option value="5">5 - Constant</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="energyLevel">Energy level</label>
+            <select id="energyLevel">
+              <option value="1">1 - Low</option>
+              <option value="2">2 - Tired</option>
+              <option value="3" selected>3 - Normal</option>
+              <option value="4">4 - Good</option>
+              <option value="5">5 - Excellent</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="teamSize">Team size</label>
+            <input type="number" id="teamSize" min="1" max="20" step="1" value="1" />
+          </div>
+          <div class="form-group">
+            <label for="dependencyCount">Dependencies</label>
+            <input type="number" id="dependencyCount" min="0" max="20" step="1" value="0" />
+          </div>
+          <div class="form-group">
+            <label for="riskLevel">Risk level</label>
+            <select id="riskLevel">
+              <option value="1">1 - Very low</option>
+              <option value="2">2 - Low</option>
+              <option value="3" selected>3 - Medium</option>
+              <option value="4">4 - High</option>
+              <option value="5">5 - Critical</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="reviewEffort">Review effort</label>
+            <select id="reviewEffort">
+              <option value="0">None</option>
+              <option value="1" selected>Light</option>
+              <option value="2">Normal</option>
+              <option value="3">Heavy</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-footer">
+          <div class="error-msg" id="formGeneralError" role="alert"></div>
+          <button type="submit" class="btn btn-primary" id="submitBtn">Analyze Task</button>
+        </div>
+      </form>
+    </section>
 
+    <section class="panel table-panel">
+      <div class="panel-header table-controls">
+        <div>
+          <h2>Task History</h2>
+          <p>Review variance, accuracy, and outcome for each completed task.</p>
+        </div>
+        <div class="control-row">
+          <input class="search-input" id="taskSearch" type="search" placeholder="Search tasks" />
+          <select class="select-input" id="statusFilter" aria-label="Filter by estimation type">
+            <option value="all">All outcomes</option>
+            <option value="Accurate">Accurate</option>
+            <option value="Overestimation">Overestimated</option>
+            <option value="Underestimation">Underestimated</option>
+          </select>
+          <button class="btn btn-secondary" id="csvExportBtn" type="button">Export CSV</button>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="task-table" id="taskTable">
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Context</th>
+              <th>Estimated</th>
+              <th>Actual</th>
+              <th>Variance</th>
+              <th>Due</th>
+              <th>Outcome</th>
+              <th>Accuracy</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="taskTableBody"></tbody>
+        </table>
+        <div class="empty-state" id="emptyState">
+          <strong>No task analysis yet</strong>
+          <span>Add your first completed task to see accuracy insights.</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+      <h3 class="modal-title" id="deleteTitle">Delete Task?</h3>
+      <p class="modal-desc">This removes the task from your estimation history.</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="cancelDelete">Cancel</button>
+        <button class="btn btn-danger" id="confirmDelete">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="editModalOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+      <h3 class="modal-title" id="editTitle">Edit Task</h3>
+      <form class="task-form" id="editTaskForm" novalidate>
+        <div class="form-group">
+          <label for="editTaskName">Task name</label>
+          <input type="text" id="editTaskName" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label for="editExpectedTime">Estimated hours</label>
+          <input type="number" id="editExpectedTime" step="0.1" min="0" />
+        </div>
+        <div class="form-group">
+          <label for="editActualTime">Actual hours</label>
+          <input type="number" id="editActualTime" step="0.1" min="0" />
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="cancelEdit" type="button">Cancel</button>
+          <button class="btn btn-primary" type="submit">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,25 @@
+\section{Final Results or Outputs}
+\begin{justify}
+The completed system accepts task data, analyses estimation quality, stores records in MySQL, and returns a meaningful response to the user. For example, if the expected time is 2 hours and the actual time is 3 hours, the system returns Underestimation because the task took longer than expected.
+\end{justify}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|M|M|M|M|}
+\hline
+\textbf{Expected Time} & \textbf{Actual Time} & \textbf{Estimation Type} & \textbf{Meaning} \\
+\hline
+2 & 3 & Underestimation & User planned less time than required. \\
+\hline
+4 & 2 & Overestimation & User planned more time than required. \\
+\hline
+3 & 3 & Accurate & User estimate matched actual time. \\
+\hline
+\end{tabular}
+\caption{Sample Output Cases}
+\end{table}
+
+\section{Limitations Observed}
+\begin{justify}
+The current implementation uses hardcoded database credentials and hardcoded user id for task insertion. Passwords are stored in plain text in the current academic version. The AI logic is rule-based and does not yet learn from large historical data. These limitations can be improved in future versions.
+\end{justify}

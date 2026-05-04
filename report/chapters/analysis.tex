@@ -1,0 +1,95 @@
+\section{Functional Requirements}
+\begin{justify}
+The functional requirements follow the IEEE SRS style by describing visible behavior expected from the software.
+\end{justify}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|M|L|}
+\hline
+\textbf{Requirement ID} & \textbf{Description} \\
+\hline
+FR-01 & The system shall allow the user to enter task name, expected time, and actual time. \\
+\hline
+FR-02 & The system shall validate that all required fields are present. \\
+\hline
+FR-03 & The system shall validate that expected time and actual time are positive numbers. \\
+\hline
+FR-04 & The system shall classify a task as Underestimation, Overestimation, or Accurate. \\
+\hline
+FR-05 & The system shall calculate the difference between expected and actual time. \\
+\hline
+FR-06 & The system shall calculate and return an accuracy percentage. \\
+\hline
+FR-07 & The system shall store task details and analysis results in MySQL. \\
+\hline
+FR-08 & The system shall provide APIs for registration, login, task list, dashboard, and suggestion. \\
+\hline
+\end{tabular}
+\caption{Functional Requirements}
+\end{table}
+
+\section{Non Functional Requirements}
+\begin{table}[H]
+\centering
+\begin{tabular}{|M|L|}
+\hline
+\textbf{Requirement ID} & \textbf{Description} \\
+\hline
+NFR-01 & The interface should be simple and understandable for first-time users. \\
+\hline
+NFR-02 & The backend should respond quickly for normal task submission. \\
+\hline
+NFR-03 & The database design should maintain task and analysis data consistently. \\
+\hline
+NFR-04 & The system should be maintainable by separating server logic, database connection, and SQL queries. \\
+\hline
+NFR-05 & The system should be extendable for future machine learning-based prediction. \\
+\hline
+\end{tabular}
+\caption{Non Functional Requirements}
+\end{table}
+
+\section{Specific Requirements}
+\begin{table}[H]
+\centering
+\begin{tabular}{|M|L|}
+\hline
+\textbf{Category} & \textbf{Requirement} \\
+\hline
+Hardware & Laptop or desktop computer with minimum 4 GB RAM and basic internet/browser support. \\
+\hline
+Software & Node.js, Express.js, MySQL Server, browser, code editor, and Overleaf/LaTeX for report preparation. \\
+\hline
+Frontend & HTML, CSS, and JavaScript. \\
+\hline
+Backend & Node.js, Express.js, CORS, mysql2 package. \\
+\hline
+Database & MySQL database named \texttt{task\_estimation\_system}. \\
+\hline
+\end{tabular}
+\caption{Hardware and Software Requirements}
+\end{table}
+
+\section{UseCase Diagrams and Description}
+\begin{justify}
+The main actor is the user. The user can add a task, enter expected and actual time, view analysis, register, login, view tasks, view dashboard data, and get suggested time. The backend system validates input, stores data, and generates the estimation result.
+\end{justify}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|M|L|}
+\hline
+\textbf{Use Case} & \textbf{Description} \\
+\hline
+Add Task & User submits task name, expected time, and actual time. \\
+\hline
+Analyze Task & System compares expected and actual time and generates classification. \\
+\hline
+View Dashboard & User views previous tasks with analysis details. \\
+\hline
+Get Suggestion & System calculates average actual time for a matching task name. \\
+\hline
+\end{tabular}
+\caption{Use Case Description}
+\end{table}

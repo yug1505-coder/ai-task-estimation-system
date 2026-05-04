@@ -1,0 +1,52 @@
+\section{Algorithms / Methods Used}
+\begin{justify}
+The project uses rule-based artificial intelligence. The rules are deterministic and easy to understand:
+\end{justify}
+
+\begin{lstlisting}[language=JavaScript,caption={Rule-based estimation logic}]
+if (actual > expected) {
+  estimation_type = "Underestimation";
+} else if (actual < expected) {
+  estimation_type = "Overestimation";
+} else {
+  estimation_type = "Accurate";
+}
+
+accuracy = ((expected / actual) * 100).toFixed(2);
+\end{lstlisting}
+
+\section{Working of the Project}
+\begin{justify}
+The backend server is built using Express.js. The \texttt{/addTask} endpoint receives JSON input, validates it, applies the estimation rules, and stores the result using MySQL queries. The frontend uses the Fetch API to send data to the backend and displays the returned message.
+\end{justify}
+
+\begin{lstlisting}[language=JavaScript,caption={Frontend API call}]
+const response = await fetch("http://localhost:3000/addTask", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ task_name, expected_time, actual_time })
+});
+\end{lstlisting}
+
+\section{Important APIs}
+\begin{table}[H]
+\centering
+\begin{tabular}{|M|L|}
+\hline
+\textbf{API} & \textbf{Purpose} \\
+\hline
+POST /addTask & Adds task, performs analysis, and stores result. \\
+\hline
+POST /register & Registers a user. \\
+\hline
+POST /login & Finds user by email. \\
+\hline
+GET /tasks/:user\_id & Fetches all tasks for a user. \\
+\hline
+GET /dashboard/:user\_id & Fetches task and analysis details. \\
+\hline
+GET /suggest/:task\_name & Returns average actual time for a task name. \\
+\hline
+\end{tabular}
+\caption{Backend API Endpoints}
+\end{table}

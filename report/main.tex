@@ -1,0 +1,140 @@
+\documentclass[12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=2cm,bottom=3.5cm,left=2.54cm,right=2.54cm]{geometry}
+\usepackage{setspace}
+\usepackage[titletoc]{appendix}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{pdfpages}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{pgf}
+\usepackage{pgfpages}
+\usepackage{biblatex}
+
+\addbibresource{references.bib}
+\graphicspath{{images/}}
+\hypersetup{colorlinks,citecolor=red,filecolor=black,linkcolor=black,urlcolor=blue}
+
+\pgfpagesdeclarelayout{boxed}
+{
+  \edef\pgfpageoptionborder{0pt}
+}
+{
+  \pgfpagesphysicalpageoptions{logical pages=1}
+  \pgfpageslogicalpageoptions{1}{
+    border code=\pgfsetlinewidth{0.5pt}\pgfstroke,
+    border shrink=\pgfpageoptionborder,
+    resized width=.95\pgfphysicalwidth,
+    resized height=.95\pgfphysicalheight,
+    center=\pgfpoint{.5\pgfphysicalwidth}{.5\pgfphysicalheight}
+  }
+}
+\pgfpagesuselayout{boxed}
+
+\definecolor{myred}{HTML}{581000}
+\pagestyle{fancy}
+\fancyfoot{}
+\fancyfoot[R]{\thepage}
+\fancyfoot[L]{\textbf{Department of Computer Engineering \& Applications 2024-28 Batch}}
+\renewcommand{\footrulewidth}{3pt}
+\renewcommand{\footrule}{\hbox to\headwidth{\color{myred}\leaders\hrule height \footrulewidth\hfill}}
+\fancypagestyle{plain}{%
+\fancyhf{}
+\fancyfoot[R]{\thepage}
+\fancyfoot[L]{\textbf{Department of Computer Engineering \& Applications 2024-28 Batch}}
+\renewcommand{\footrulewidth}{3pt}
+\renewcommand{\footrule}{\hbox to\headwidth{\color{myred}\leaders\hrule height \footrulewidth\hfill}}
+}
+
+\newcolumntype{Y}{>{\centering\arraybackslash}m{4.4cm}}
+\newcolumntype{X}{>{\centering\arraybackslash}m{7cm}}
+\newcolumntype{P}{>{\centering\arraybackslash}m{2.5cm}}
+\newcolumntype{L}{>{\raggedright\arraybackslash}m{8cm}}
+\newcolumntype{M}{>{\raggedright\arraybackslash}m{3.7cm}}
+\newcolumntype{Z}{>{\justify\arraybackslash}m{15cm}}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  columns=fullflexible
+}
+
+\newcommand{\safeincludegraphics}[2][]{%
+  \IfFileExists{images/#2}{\includegraphics[#1]{#2}}{\fbox{\parbox[c][2.5cm][c]{0.45\textwidth}{\centering Upload image: #2}}}%
+}
+
+\begin{document}
+\renewcommand{\thepage}{\roman{page}}
+
+\input{chapters/titlepage}
+\setstretch{1.5}
+\input{chapters/certificate}
+\input{chapters/examiner}
+\input{chapters/declaration}
+
+\addcontentsline{toc}{chapter}{Abstract}
+\input{chapters/abstract}
+
+\setlength{\parskip}{0pt}
+\tableofcontents
+\addcontentsline{toc}{chapter}{List of Figures}
+\listoffigures
+\addcontentsline{toc}{chapter}{List of Tables}
+\listoftables
+\addcontentsline{toc}{chapter}{List of Abbreviations}
+\input{chapters/abbreviations}
+
+\clearpage
+\setcounter{page}{1}
+\setcounter{chapter}{0}
+\renewcommand{\thepage}{\arabic{page}}
+\setlength{\parskip}{1em}
+
+\chapter{Introduction}\label{cha:introduction}
+\input{chapters/introduction}
+
+\chapter{Literature Review}\label{chap:lit}
+\input{chapters/literature}
+
+\chapter{System Analysis}\label{chap:ana}
+\input{chapters/analysis}
+
+\chapter{Analysis Modeling}\label{chap:model}
+\input{chapters/model}
+
+\chapter{Project Design}\label{cha:design}
+\input{chapters/project_design}
+
+\chapter{Implementation}\label{cha:implementation}
+\input{chapters/implementation}
+
+\chapter{Results}
+\input{chapters/results}
+
+\chapter{Conclusions and Future Scope}
+\input{chapters/conclusion}
+
+\addcontentsline{toc}{chapter}{References}
+\printbibliography
+
+\addcontentsline{toc}{chapter}{Appendix}
+\input{chapters/appendix}
+
+\addcontentsline{toc}{chapter}{Paper Publication}
+\input{chapters/publication}
+
+\input{chapters/acknowledgements}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+
+\end{document}

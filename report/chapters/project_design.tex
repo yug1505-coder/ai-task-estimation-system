@@ -1,0 +1,14 @@
+\section{User Interface Design}
+\begin{justify}
+The frontend contains a simple form for entering task name, expected time, and actual time. The response area displays whether the task was underestimated, overestimated, or accurately estimated, along with the calculated accuracy. A separate local task tracker interface is also present in the root files with deadline tracking, completion time, statistics, edit, delete, clear all, and dark mode features.
+\end{justify}
+
+\section{Database Design}
+\begin{justify}
+The database is designed in relational form. The users table stores account details. The tasks table stores task information and refers to users through a foreign key. The task\_analysis table stores the calculated result and refers to tasks through a foreign key. This design avoids mixing user details, task details, and analysis results in one table.
+\end{justify}
+
+\section{Project Flow}
+\begin{justify}
+The user submits task data from the frontend. The backend receives the request at the \texttt{/addTask} API. After validation, expected time and actual time are converted into numeric values. The system applies rules, calculates accuracy, stores the task, stores the analysis, updates task status, and returns a JSON response.
+\end{justify}
