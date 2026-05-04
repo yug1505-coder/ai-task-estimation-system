@@ -35,6 +35,14 @@ Accuracy is clamped between 0 and 100. A task is treated as accurate when the er
 - Database: MongoDB with Mongoose
 - Authentication: bcrypt and JSON Web Tokens
 
+## Contributors
+
+- Shubh Kaushal
+- Toshi Singh
+- Yug Babbar
+- Vikash Sisodia
+- Nishu Sharma
+
 ## Start Project
 
 Start MongoDB locally first, then run:
